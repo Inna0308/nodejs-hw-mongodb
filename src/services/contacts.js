@@ -24,7 +24,9 @@ export const getContacts = async ({
     .skip(skip)
     .limit(limit)
     .sort({ [sortBy]: sortOrder });
-  const totalItems = await Contact.find().merge(contactsQuery).countDocuments();
+  const totalItems = await Contact.find(
+    contactsQuery.getQuery(),
+  ).countDocuments();
 
   const paginationData = calcPaginationData({ totalItems, page, perPage });
 
