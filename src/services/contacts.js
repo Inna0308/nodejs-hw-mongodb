@@ -20,6 +20,10 @@ export const getContacts = async ({
     contactsQuery.where('isFavourite', filter.isFavourite);
   }
 
+  if (filter.userId) {
+    contactsQuery.where('userId', filter.userId);
+  }
+
   const items = await contactsQuery
     .skip(skip)
     .limit(limit)
@@ -36,12 +40,15 @@ export const getContacts = async ({
   };
 };
 
-export const getContactById = (contactId) => Contact.findById(contactId);
+export const getContactById = async (contactId, userId) => {
+  const contact = await Contact.findOne({ _id: contactId, userId });
+  return contact;
+};
 
 export const addContact = (data) => Contact.create(data);
 
-export const updateContact = async (_id, data) => {
-  const result = await Contact.findOneAndUpdate({ _id }, data, {
+export const updateContact = async (_id, userId, data) => {
+  const result = await Contact.findOneAndUpdate({ _id, userId }, data, {
     new: true,
     runValidators: true,
   });
@@ -49,4 +56,7 @@ export const updateContact = async (_id, data) => {
   return result;
 };
 
-export const deleteContact = (filter) => Contact.findOneAndDelete(filter);
+export const deleteContact = async (contactId, userId) => {
+  const contact = await Contact.findOneAndDelete({ _id: contactId, userId });
+  return contact;
+};
