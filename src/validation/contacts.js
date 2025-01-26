@@ -25,7 +25,7 @@ export const contactAddSchema = Joi.object({
     'string.min': 'The "Email" field must have at least {#limit} characters',
     'string.max': 'The "Email" field must have at most {#limit} characters',
   }),
-  isFavourite: Joi.boolean(),
+  isFavourite: Joi.boolean().required(),
   contactType: Joi.string()
     .min(3)
     .max(20)
